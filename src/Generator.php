@@ -27,7 +27,7 @@ class Generator
         }
 
         if (file_exists($this->outputFilePath) && !$this->override) {
-            throw new OutputFileAlreadyExistException($this->inputFilePath);
+            throw new OutputFileAlreadyExistException($this->outputFilePath);
         }
 
         $this->originalFileContent = $this->extractFileContent();
