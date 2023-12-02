@@ -50,6 +50,12 @@ class Generator
 
     public function generate(): self
     {
+        $directory = dirname($this->outputFilePath);
+
+        if (!is_dir($directory)) {
+            mkdir($directory, 0777, true);
+        }
+
         $success = file_put_contents(
             filename: $this->outputFilePath,
             data: $this->replacedFileContent,
