@@ -3,7 +3,6 @@
 namespace Vassilidev\Stubbify;
 
 use Vassilidev\Stubbify\Exceptions\FileNotFoundException;
-use Vassilidev\Stubbify\Exceptions\OutputFileAlreadyExistException;
 
 class Generator
 {
@@ -13,7 +12,6 @@ class Generator
 
     /**
      * @throws FileNotFoundException
-     * @throws OutputFileAlreadyExistException
      */
     public function __construct(
         public string $inputFilePath,
@@ -24,10 +22,6 @@ class Generator
     {
         if (!file_exists($this->inputFilePath)) {
             throw new FileNotFoundException($this->inputFilePath);
-        }
-
-        if (file_exists($this->outputFilePath) && !$this->override) {
-            throw new OutputFileAlreadyExistException($this->outputFilePath);
         }
 
         $this->originalFileContent = $this->extractFileContent();
@@ -50,6 +44,10 @@ class Generator
 
     public function generate(): self
     {
+        if (file_exists($this->outputFilePath) && !$this->override) {
+            return $this;
+        }
+
         $directory = dirname($this->outputFilePath);
 
         if (!is_dir($directory)) {
